@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
     res.send("hello world");
 }); 
 
-app.use('/book', bookRouter)
+app.use('/book', authMiddleware, bookRouter)
 app.use('/user', userRouter)
 
 const PORT = process.env.PORT || 8080;

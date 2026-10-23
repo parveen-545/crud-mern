@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import {BookBaseURL} from "./axiosInstance"
+import { BookBaseURL } from "./axiosInstance"
 
 const Home = () => {
   const initialFormState = {
@@ -17,11 +17,17 @@ const Home = () => {
 
   const fetchAllBooks = async () => {
     try {
-      //const response = await BookBaseURL.get('/getbooks');
-// Home.jsx ke andar line 20-21 ke paas:
-const response = await BookBaseURL.get('/getbooks'); // '/booklists' ki jagah '/getbooks' try karein
-      // Backend ke response structure ke hisab se setup kiya
-      setAllBooks(response.data.data || response.data); 
+      const response = await BookBaseURL.get('/booklists');
+      console.log("Postman jaisa response yahan dekho:", response.data);
+
+      // ✅ Agar backend se response.data.data mile ya direct array mile, dono handle ho jayenge
+      if (response.data && response.data.data) {
+        setAllBooks(response.data.data);
+      } else if (response.data && response.data.BookList) {
+        setAllBooks(response.data.BookList); // Video wale format ke liye safety
+      } else {
+        setAllBooks(response.data || []);
+      }
     } catch (error) {
       console.log(error, "error fetching books");
     }
@@ -201,7 +207,7 @@ const response = await BookBaseURL.get('/getbooks'); // '/booklists' ki jagah '/
                       >
                         Edit
                       </button>
-                      
+
                       {/* ✅ FIX: Delete button ka aadha kata code complete kiya */}
                       <button
                         className="bg-red-500 text-white px-3 py-1 rounded-sm text-xs font-semibold hover:bg-red-600 active:scale-95 transition-all"
