@@ -4,13 +4,20 @@ const cors = require('cors'); // 👈 Top imports mein add karein
 const express = require('express');
 const databaseConnections = require('./database');
 const bookRouter = require("./routes/book.routes")
+const userRouter = require('./routes/user.routes')
+const authMiddleware = require('./middleware/auth.middleware')
 
 // database connection
 databaseConnections();
 
 const app = express();
 
-app.use(cors()); // 👈 app.use(express.json()) ke theek upar laga dein
+app.use(cors({
+    origin: ["http://localhost:5173", "http://localhost:3000"], // Aapka React app jis port par chal raha hai (Vite ka defaults 5173 hota hai)
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true
+}));
+
 app.use(express.json())
 
 app.get('/', (req, res) => {
@@ -18,6 +25,7 @@ app.get('/', (req, res) => {
 }); 
 
 app.use('/book', bookRouter)
+app.use('/user', userRouter)
 
 const PORT = process.env.PORT || 8080;
 

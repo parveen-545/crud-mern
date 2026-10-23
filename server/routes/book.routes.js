@@ -13,7 +13,7 @@ const router = express.Router();
 router.post('/addbook', handleBookStoreController)
 router.get('/getbooks', handleGetAllBookController)
 router.delete('/deletebook/:id', handleDeleteBookController)
-
+router.get('/booklists', handleGetAllBookController)
 // ✅ नया रूट जोड़ दिया: http://localhost:8080/book/updatebook/:id
 router.put('/updatebook/:id', handleUpdateBookController)
 
